@@ -11,14 +11,13 @@ dotenv.config();
 
 const app = express();
 
-/* -------------------- BASIC ROUTES (KEEP FIRST) -------------------- */
+/* -------------------- BASIC ROUTES -------------------- */
 
-// Root route → Railway health check fix
+// Root route (important for Railway)
 app.get("/", (req, res) => {
   res.status(200).send("Server is LIVE ✅");
 });
 
-// Optional health route
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
@@ -51,20 +50,25 @@ app.use("/api", routes);
 app.use(routeNotFound);
 app.use(errorHandler);
 
-/* -------------------- DATABASE -------------------- */
-
-dbConnection();
-
 /* -------------------- SERVER START -------------------- */
 
 const PORT = process.env.PORT || 5000;
 
-// Debug (important)
+app.set("trust proxy", 1);
+
 console.log("PORT FROM RAILWAY:", PORT);
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
-});
+/* 🔥 IMPORTANT: start server AFTER DB connects */
+
+dbConnection()
+  .then(() => {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("DB CONNECTION FAILED:", err);
+  });
 
 /* -------------------- CRASH DEBUG -------------------- */
 
