@@ -14,7 +14,8 @@ dbConnection();
 
 const app = express();
 
-// Middleware
+/* -------------------- MIDDLEWARE -------------------- */
+
 app.use(
   cors({
     origin: [
@@ -22,7 +23,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
     ],
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -31,26 +32,33 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Optional (enable if needed)
+// optional logging
 app.use(morgan("dev"));
 
-/* -------------------- IMPORTANT -------------------- */
-// Root route (fixes "Application failed to respond")
+/* -------------------- ROOT ROUTE (IMPORTANT) -------------------- */
+
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-/* -------------------------------------------------- */
+/* -------------------- ROUTES -------------------- */
 
-// Routes
 app.use("/api", routes);
 
-// Error Handling
+/* -------------------- ERROR HANDLING -------------------- */
+
 app.use(routeNotFound);
 app.use(errorHandler);
 
-// Server listen (Railway compatible)
-const PORT = process.env.PORT || 5000;
+/* -------------------- PORT FIX (CRITICAL) -------------------- */
+
+// Railway provides dynamic PORT — DO NOT hardcode
+const PORT = process.env.PORT;
+
+// Debug log (to verify Railway port)
+console.log("PORT FROM RAILWAY:", PORT);
+
+/* -------------------- START SERVER -------------------- */
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
