@@ -9,10 +9,19 @@ import dbConnection from "./utils/connectDB.js";
 
 dotenv.config();
 
-// Connect Database
-dbConnection();
-
 const app = express();
+
+/* -------------------- BASIC ROUTES (KEEP FIRST) -------------------- */
+
+// Root route → Railway health check fix
+app.get("/", (req, res) => {
+  res.status(200).send("Server is LIVE ✅");
+});
+
+// Optional health route
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
 
 /* -------------------- MIDDLEWARE -------------------- */
 
@@ -31,15 +40,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// optional logging
 app.use(morgan("dev"));
-
-/* -------------------- ROOT ROUTE (IMPORTANT) -------------------- */
-
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
 
 /* -------------------- ROUTES -------------------- */
 
@@ -50,16 +51,27 @@ app.use("/api", routes);
 app.use(routeNotFound);
 app.use(errorHandler);
 
-/* -------------------- PORT FIX (CRITICAL) -------------------- */
+/* -------------------- DATABASE -------------------- */
 
-// Railway provides dynamic PORT — DO NOT hardcode
-const PORT = process.env.PORT;
+dbConnection();
 
-// Debug log (to verify Railway port)
+/* -------------------- SERVER START -------------------- */
+
+const PORT = process.env.PORT || 5000;
+
+// Debug (important)
 console.log("PORT FROM RAILWAY:", PORT);
-
-/* -------------------- START SERVER -------------------- */
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+/* -------------------- CRASH DEBUG -------------------- */
+
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("UNHANDLED REJECTION:", err);
 });
