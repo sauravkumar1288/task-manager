@@ -26,13 +26,21 @@ app.get("/health", (req, res) => {
 
 app.use(
   cors({
-    origin: [
-      "https://zoological-inspiration-production.up.railway.app",
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        "https://zoological-inspiration-production.up.railway.app",
+        "http://localhost:3000",
+        "http://localhost:3001",
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   })
 );
 
