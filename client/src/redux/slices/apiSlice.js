@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// const API_URL = import.meta.env.VITE_APP_BASE_URL + "/api";
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://task-manager-production-5f16.up.railway.app/api";
 
-const baseQuery = fetchBaseQuery({ baseUrl: API_URL });
+const baseQuery = fetchBaseQuery({ 
+  baseUrl: API_URL,
+  credentials: "include",
+});
 
 export const apiSlice = createApi({
   baseQuery,

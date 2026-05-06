@@ -27,7 +27,7 @@ app.get("/health", (req, res) => {
 app.use(
   cors({
     origin: [
-      "https://mern-task-manager-app.netlify.app",
+      "https://zoological-inspiration-production.up.railway.app",
       "http://localhost:3000",
       "http://localhost:3001",
     ],
