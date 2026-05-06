@@ -1,101 +1,156 @@
-# 🚀 Task Manager Web App (MERN Stack)
+# Task Manager — MERN Stack
 
-## 📌 Overview
-This is a full-stack Task Manager web application that allows users to create projects, assign tasks, and track progress efficiently. The system supports **role-based access control (Admin/Member)** to manage teams and tasks securely.
+A personal project I built to learn full-stack web development using the MERN stack. The app lets users create projects, assign tasks, and track progress with role-based access for Admin and Member roles.
 
-Built using the **MERN stack (MongoDB, Express.js, React, Node.js)**, the application provides a scalable and user-friendly interface for real-time task management.
-
----
-
-## 🎯 Problem Statement
-Traditional task management methods (spreadsheets/manual tracking) are inefficient and error-prone. This application solves that problem by offering a **centralized platform** for project management, task assignment, and collaboration.
+🔗 **Live URL:** https://zoological-inspiration-production.up.railway.app  
+📁 **GitHub:** https://github.com/sauravkumar1288/task-manager
 
 ---
 
-## ✨ Key Features
+## 🚀 Features
 
-### 🔐 Authentication & Authorization
-- User Signup/Login
-- Secure JWT-based authentication
-- Role-based access (Admin / Member)
-
-### 📁 Project & Team Management
-- Create and manage projects
-- Add team members
-- Admin controls user access
-
-### ✅ Task Management
-- Create, assign, and update tasks
-- Task status tracking:
-  - To Do
-  - In Progress
-  - Completed
-- Priority levels (High, Medium, Low)
-- Subtask support
-
-### 📊 Dashboard
-- Overview of all tasks
-- Status-wise filtering
-- Overdue task tracking
-
-### 💬 Collaboration
-- Task comments / activity tracking
+- **Authentication** — Signup, login and logout with JWT
+- **Project Management** — Create and manage projects with team members
+- **Task Management** — Create, assign and track tasks with priority levels
+- **Task Status Tracking** — Todo → In Progress → Completed
+- **Dashboard** — View task stats, overdue tasks and priority chart
+- **Role-based Access** — Admin and Member roles with different permissions
 
 ---
 
-## 🧑‍💼 Roles & Permissions
+## 🧑‍💼 Roles
 
-### 👑 Admin
-- Manage users and teams
-- Assign tasks
-- Update/delete tasks
-- Control user access
+**Admin**
+- Create, update and delete tasks
+- Manage team members
+- View all tasks and projects
 
-### 👤 Member
+**Member**
 - View assigned tasks
 - Update task status
-- Participate in task discussions
+- Add activity/comments
 
 ---
 
 ## 🛠 Tech Stack
 
-### Frontend
-- React.js (Vite)
-- Redux Toolkit
-- Tailwind CSS
-- Headless UI
-
-### Backend
-- Node.js
-- Express.js
-
-### Database
-- MongoDB
+| Layer | Tech |
+|---|---|
+| Frontend | React.js (Vite), Redux Toolkit, Tailwind CSS |
+| Backend | Node.js, Express.js |
+| Database | MongoDB Atlas |
+| Auth | JWT + bcryptjs |
+| Deployment | Railway |
 
 ---
 
-## ⚙️ System Requirements
+## ⚙️ Requirements Met
 
-- RESTful APIs
-- Proper data validation
-- Role-based access control
-- Database relationships (MongoDB schemas)
-
----
-
-## 🌐 Deployment (Mandatory)
-
-The application is deployed using **Railway**.
-
-🔗 **Live URL:**  
-👉 (Add your Railway link here)
+- ✅ REST APIs
+- ✅ MongoDB database with proper relationships
+- ✅ Input validations
+- ✅ Role-based access control
+- ✅ Live deployment on Railway
 
 ---
 
-## 📦 Installation & Setup
+## 📦 Local Setup
 
-### 1️⃣ Clone Repository
+### 1. Clone the repo
 ```bash
 git clone https://github.com/sauravkumar1288/task-manager.git
 cd task-manager
+```
+
+### 2. Setup Backend
+```bash
+cd server
+npm install
+```
+
+Create `.env` file in server folder:
+```
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+Start server:
+```bash
+npm start
+```
+
+### 3. Setup Frontend
+```bash
+cd client
+npm install
+npm run dev
+```
+
+### 4. Open in browser
+```
+http://localhost:3000
+```
+
+### 5. Create first Admin user
+```bash
+curl -X POST http://localhost:5000/api/user/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Admin","email":"admin@test.com","password":"123456","isAdmin":true,"role":"Administrator","title":"Admin"}'
+```
+
+---
+
+## 📡 API Endpoints
+
+### User
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /api/user/register | Register user |
+| POST | /api/user/login | Login |
+| POST | /api/user/logout | Logout |
+| GET | /api/user/get-team | Get all users |
+
+### Tasks
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /api/task | Get all tasks |
+| POST | /api/task/create | Create task |
+| PUT | /api/task/update/:id | Update task |
+| DELETE | /api/task/:id | Delete task |
+| GET | /api/task/dashboard | Dashboard stats |
+
+### Projects
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /api/project | Get all projects |
+| POST | /api/project/create | Create project |
+| PUT | /api/project/update/:id | Update project |
+| DELETE | /api/project/:id | Delete project |
+
+---
+
+## 📂 Folder Structure
+
+```
+task-manager/
+├── client/          # React frontend
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── redux/
+│       └── utils/
+├── server/          # Node.js backend
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   └── utils/
+└── README.md
+```
+
+---
+
+## 👤 Author
+**Saurav Singh**  
+GitHub: [@sauravkumar1288](https://github.com/sauravkumar1288)
